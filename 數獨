@@ -1,0 +1,76 @@
+#include<iostream>
+using namespace std;
+int r_c(int str2[9][9]);   // row_column_check
+int s_c(int str3[9][9]);  //九宮格測試
+int main()
+{
+	
+	int str1[9][9];
+	while( cin >> str1[ 0 ][ 0 ] )
+    {
+	for( int i = 0; i < 9; i++ )
+            for( int j = 0; j < 9; j++ )
+            {
+                if( i == 0 && j == 0 )
+                    continue;
+                cin >> str1[ i ][ j ];
+            }
+	if (r_c(str1) && s_c(str1))
+	cout<<"yes"<<endl;
+	else
+	cout<<"no"<<endl;
+}
+}
+int r_c(int str2[9][9])
+{
+	for (int x = 0 ; x < 9 ; x++)
+	{
+		int r_c = 0, c_c = 0;
+		for (int y = 0; y < 9 ; y++)
+		{
+			r_c+= str2[x][y];
+			c_c+= str2[y][x];
+		}
+		if(r_c!= 45 || c_c!=45)
+		{
+			return false;
+			break;
+		}
+		if(x==8)
+		return true;
+	}
+}
+int s_c(int str3[9][9])
+{
+	int jdg = 0;     //測試是否真實
+	for (int x = 0 ; x<9 ; x+=3)
+	{
+		
+		for (int y = 0 ; y<9 ; y+=3)
+		{
+			int ct = 0;
+			
+			for(int i = 0 ; i<3 ; i++)
+			{
+				for (int n = 0 ; n<3 ; n++)
+				{
+					ct+= str3[i+x][y+n];
+				}
+			}
+			if (ct!=45)
+			{
+				jdg = -1;
+				break;	
+			}
+		}
+		if (x == 8 && jdg ==0 )
+		{
+		return true;
+		}
+		if (jdg == -1)
+		{
+			return false;
+			break;
+		}
+	}
+}
