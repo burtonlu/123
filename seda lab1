@@ -1,0 +1,95 @@
+#include <iostream>
+#include <string>
+#include <time.h> 
+#include <vector>
+#include <algorithm>
+#include<fstream>
+#include <sstream>
+using namespace std;
+
+class OBJ
+{
+public:
+    int index;
+    string name;
+    int x;
+    int y;
+};
+
+bool printA( OBJ lhs, OBJ rhs)
+{
+	if(lhs.x>rhs.x )
+	{
+		return lhs.x<rhs.x ;
+	}
+	else if (lhs.x==rhs.x )
+	{
+		return lhs.y<rhs.y ;
+	}
+} 
+
+
+bool printB( OBJ lhs, OBJ rhs)
+{
+	if(lhs.y>rhs.y )
+	{
+		return lhs.y<rhs.y ;
+	}
+	else if (lhs.y==rhs.y )
+	{
+		return lhs.x<rhs.x ;
+	}
+} 
+
+
+int main()
+{
+    clock_t start_time, end_time;
+    double run_time=0;
+
+    start_time=clock();
+	OBJ temp;
+	vector<OBJ> aa,bb;
+	int count=0,inde=0;
+	fstream fin;
+    fin.open("file003.txt",ios::in);
+    string s1,s2,s3,s4,s5;
+    stringstream ss;
+    
+  while(getline(fin,s1)){	
+  		 count++;
+        if(count==3)
+        { 
+        	break;
+		}
+		}
+		while(fin>>temp.name>>s2>>temp.x>>s4>>temp.y)
+		{
+			temp.index=inde;
+			aa.push_back(temp);
+			inde++;
+		}
+		
+		sort(aa.begin(),aa.end(),printA); 
+		bb=aa;
+		sort(bb.begin(),bb.end(),printB);
+
+		end_time=clock();
+		fstream fp;
+    	fp.open("file009.txt", ios::out);
+    	if(!fp){
+        	cout<<"Fail to open file: "<<"file009.txt"<<endl;
+   		 }  	
+		fp<<"order A\t"<<"order B"<<"\n";
+		//=========================================================
+		
+    	run_time=(double)(end_time-start_time)/CLOCKS_PER_SEC; // your program's run time
+    	fp<<"Run time: "<<run_time<<endl;
+		
+		for(int gg=0;gg<aa.size();gg++) 
+		{
+			fp<<aa[gg].name<<"\t"<<bb[gg].name<<endl;
+		}
+		fp.close();
+    return 0;
+}	
