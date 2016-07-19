@@ -1,0 +1,127 @@
+#include <iostream>
+#include <string>
+#include <time.h> 
+#include <vector>
+#include <map>
+#include <algorithm>
+#include<fstream>
+using namespace std;
+ 
+class OBJ
+{
+public:
+    int index;
+    string name;
+    int x;
+    int y;
+};
+
+bool printA( OBJ lhs, OBJ rhs)
+{
+	if(lhs.x>rhs.x )
+	{
+		return lhs.x<rhs.x ;
+	}
+	else if (lhs.x==rhs.x )
+	{
+		return lhs.y<rhs.y ;
+	}
+} 
+bool printB( OBJ lhs, OBJ rhs)
+{
+	if(lhs.y>rhs.y )
+	{
+		return lhs.y<rhs.y ;
+	}
+	else if (lhs.y==rhs.y )
+	{
+		return lhs.x<rhs.x ;
+	}	
+} 
+int main()
+{
+	OBJ temp;
+	vector<OBJ> aa,bb,cc;
+	int count=0,inde=0,GGG[100000];
+	fstream fin;
+    fin.open("file003.txt",ios::in);
+    string s1,s2,s3,s4,s5,HHH[100000],inn;
+  while(getline(fin,s1)){	
+  		 count++;
+        if(count==3)
+        { 
+        	break;
+		}
+		}
+		while(fin>>temp.name>>s2>>temp.x>>s4>>temp.y)
+		{
+			temp.index=inde;
+			aa.push_back(temp);
+			inde++;
+		}
+		sort(aa.begin(),aa.end(),printA); //X
+		bb=aa;
+		sort(bb.begin(),bb.end(),printB); //y
+		typedef map<string,OBJ> MAPP; 
+		typedef map<int,OBJ> MAP3; 
+		typedef map<string,int> MAP2;
+		MAP2 bbb,bbc; 
+		MAPP bba;
+		MAP3 PPP;
+		for(int y=0;y<aa.size();y++)
+		{
+			bba.insert(pair<string,OBJ>(aa[y].name,aa[y])); //x
+		}
+		for(int y=0;y<aa.size();y++)
+		{
+			bbb.insert(pair<string,int>(aa[y].name,y));  //y
+		}
+		
+		for(int y=0;y<bb.size();y++)
+		{
+			bbc.insert(pair<string,int>(bb[y].name,y));  //y
+		}
+		for(int y=0;y<aa.size();y++)
+		{
+			GGG[y]=aa[y].x;
+			HHH[y]=aa[y].name;
+		}
+
+		cin>>inn;
+		map < string, OBJ >::iterator iter=bba.find(inn);
+		map <string,int>::iterator iter1=bbb.find(inn);
+		map <string,int>::iterator iter2=bbc.find(inn);
+		cout<<iter->second.index<<"\t"<<iter->second.x <<"\t"<<iter->second.y<<"\t"<<iter1->second<<"\t"<<iter2->second<<endl;	
+		
+		int aaaa;
+		cin>>aaaa;
+		for(int i=0 ;i<aa.size();i++)
+		{
+			if(GGG[i]==aaaa)
+			{
+				cout<<HHH[i]<<endl;
+			}
+		}
+		
+//		while()
+		
+//		for(iter = bbb.begin(); iter != bbb.end(); iter++)
+//                cout<<iter->first<<" "<<iter->second.x<<" "<<iter->second.y<<endl;
+		
+		
+//		//=========================================================
+//		fstream fp;
+//    	fp.open("file009.txt", ios::out);
+//    	if(!fp){
+//        	cout<<"Fail to open file: "<<"file009.txt"<<endl;
+//   		 }  	
+//		fp<<"order A\t"<<"order B"<<"\n";
+//		for(int gg=0;gg<aa.size();gg++) 
+//		{
+//			fp<<aa[gg].name<<"\t"<<bb[gg].name<<endl;
+//		}
+//		fp.close();
+//		//=========================================================
+		system("pause");
+    return 0;
+}	
