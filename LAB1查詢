@@ -41,11 +41,14 @@ bool printB( OBJ lhs, OBJ rhs)
 int main()
 {
 	OBJ temp;
-	vector<OBJ> aa,bb,cc;
+	vector<OBJ> aa,bb;
 	int count=0,inde=0,GGG[100000];
+	string s1,s2,s3,s4,s5,HHH[100000],inn;
+	
+	
 	fstream fin;
     fin.open("file003.txt",ios::in);
-    string s1,s2,s3,s4,s5,HHH[100000],inn;
+    
   while(getline(fin,s1)){	
   		 count++;
         if(count==3)
@@ -59,9 +62,9 @@ int main()
 			aa.push_back(temp);
 			inde++;
 		}
-		sort(aa.begin(),aa.end(),printA); //X
+		sort(aa.begin(),aa.end(),printA); 
 		bb=aa;
-		sort(bb.begin(),bb.end(),printB); //y
+		sort(bb.begin(),bb.end(),printB); 
 		typedef map<string,OBJ> MAPP; 
 		typedef map<int,OBJ> MAP3; 
 		typedef map<string,int> MAP2;
@@ -70,27 +73,27 @@ int main()
 		MAP3 PPP;
 		for(int y=0;y<aa.size();y++)
 		{
-			bba.insert(pair<string,OBJ>(aa[y].name,aa[y])); //x
+			bba.insert(pair<string,OBJ>(aa[y].name,aa[y])); 
 		}
-		for(int y=0;y<aa.size();y++)
+		for(int y=0;y<aa.size();y++)  //將x sort丟入MAP 
 		{
-			bbb.insert(pair<string,int>(aa[y].name,y));  //y
+			bbb.insert(pair<string,int>(aa[y].name,y)); 
 		}
 		
-		for(int y=0;y<bb.size();y++)
+		for(int y=0;y<bb.size();y++) //將y sort丟入MAP 
 		{
-			bbc.insert(pair<string,int>(bb[y].name,y));  //y
+			bbc.insert(pair<string,int>(bb[y].name,y)); 
 		}
-		for(int y=0;y<aa.size();y++)
+		for(int y=0;y<aa.size();y++)  //將 
 		{
 			GGG[y]=aa[y].x;
 			HHH[y]=aa[y].name;
 		}
 
 		cin>>inn;
-		map < string, OBJ >::iterator iter=bba.find(inn);
-		map <string,int>::iterator iter1=bbb.find(inn);
-		map <string,int>::iterator iter2=bbc.find(inn);
+		map < string, OBJ >::iterator iter=bba.find(inn); //尋找index x y
+		map <string,int>::iterator iter1=bbb.find(inn); //找 x sort 
+		map <string,int>::iterator iter2=bbc.find(inn); //找y sort 
 		cout<<iter->second.index<<"\t"<<iter->second.x <<"\t"<<iter->second.y<<"\t"<<iter1->second<<"\t"<<iter2->second<<endl;	
 		
 		int aaaa;
