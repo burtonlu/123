@@ -1,0 +1,130 @@
+#include <iostream>
+#include <string>
+#include <time.h> 
+#include <vector>
+#include <map>
+#include <algorithm>
+#include<fstream>
+
+using namespace std;
+ 
+class OBJ
+{
+public:
+    int index;
+    string name;
+    int x;
+    int y;
+    int width;//新增資料結構
+ 	int height;//新增資料結構
+};
+bool printA( OBJ lhs, OBJ rhs)
+{
+	if(lhs.x>rhs.x )
+	{
+		return lhs.x<rhs.x ;
+	}
+	else if (lhs.x==rhs.x )
+	{
+		return lhs.y<rhs.y ;
+	}
+} 
+bool printB( OBJ lhs, OBJ rhs)
+{
+	if(lhs.y>rhs.y )
+	{
+		return lhs.y<rhs.y ;
+	}
+	else if (lhs.y==rhs.y )
+	{
+		return lhs.x<rhs.x ;
+	}	
+} 
+int main()
+{
+	int chip_w=100000;//寬
+	int chip_h=30000;//高
+	OBJ temp,temp1,temp2;
+	vector<OBJ> aa,bb,cc,ddd ,pp,x1;
+	int count=0,inde=0,GGG[100000];
+	fstream fin;
+    fin.open("file003.txt",ios::in);
+    string s1,s2,s3,s4,s5,HHH[100000],inn;
+  while(getline(fin,s1)){	
+  		 count++;
+        if(count==3)
+        { 
+        	break;
+		}
+		}
+		while(fin>>temp.name>>s2>>temp.x>>s4>>temp.y)
+		{
+			temp.index=inde;
+			aa.push_back(temp);
+			inde++;
+		}
+		sort(aa.begin(),aa.end(),printA); //X sort 
+		bb=aa;
+		cc=aa;
+		for(int i=0;i<aa.size();i++)
+		{
+			bb[i].index++;
+		}
+		for(int i=0;i<bb.size();i++)
+		{
+		cc[i].width=bb[i].index;
+		cc[i].height=bb[i].index;
+		}
+
+		for(int i=0;i<cc.size();i++)
+		{	
+			if((cc[i].width+cc[i].x)<=100000 && (cc[i].height+cc[i].y)<=30000 )
+			{
+				ddd.push_back(cc[i]); //12449筆資料 
+			}
+			else
+			{
+				continue;
+			}
+		}
+		pp.push_back(ddd[0]);
+		while(x1.size()!=1) 
+		{
+			x1.clear();
+			for(int i=1;i<ddd.size();i++)
+			{
+				if(ddd[i].x>=(x1[0].x+x1[0].width))
+				{
+					x1.push_back(ddd[i]);
+				}
+				else if((ddd[i].y+ddd[i].height)<=x1[0].y)
+				{
+					x1.push_back(ddd[i]);
+				}
+				else if(ddd[i].y>=(x1[0].y+x1[0].height))
+				{
+					x1.push_back(ddd[i]);
+				}
+			}
+			pp.push_back(x1[0]);
+		
+			ddd.clear();
+			ddd=x1;
+			
+		}
+	
+		cout<<pp.size();
+//		cout<<"axis equal;"<<"\n"<<"hold on;"<<"\n"<<"grid on;"<<endl;
+//		
+//		cout<<"cap_x=[0 0 30000 30000 0];"<<endl;
+//		cout<<"cap_y=[0 30000 30000 0 0];"<<endl;
+//		cout<<"fill(cap_x,cap_y,'c');"<<endl;
+//		
+//		for(int i=0;i<1826;i++)
+//		{
+//			cout<<"cap_x=[";
+//		}
+	
+		system("pause");
+    return 0;
+}	
