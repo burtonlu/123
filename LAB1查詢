@@ -16,17 +16,27 @@ public:
     int y;
 };
 
-bool printA( OBJ lhs, OBJ rhs)
+//bool printA( OBJ lhs, OBJ rhs)
+//{
+//	if(lhs.x>rhs.x )
+//	{
+//		return lhs.x<rhs.x ;
+//	}
+//	else if (lhs.x==rhs.x )
+//	{
+//		return lhs.y<rhs.y ;
+//	}
+//} 
+
+
+bool printA(OBJ a,OBJ b)     
 {
-	if(lhs.x>rhs.x )
-	{
-		return lhs.x<rhs.x ;
-	}
-	else if (lhs.x==rhs.x )
-	{
-		return lhs.y<rhs.y ;
-	}
-} 
+if(a.x!=b.x) 
+	return a.x<b.x;       
+if(a.y!=b.y) 
+	return a.y<b.y;
+ 	return  a.index<b.index;
+}
 bool printB( OBJ lhs, OBJ rhs)
 {
 	if(lhs.y>rhs.y )
