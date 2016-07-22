@@ -18,17 +18,39 @@ public:
     int width;//新增資料結構
  	int height;//新增資料結構
 };
-bool printA( OBJ lhs, OBJ rhs)
+//bool printA( OBJ lhs, OBJ rhs)
+//{
+//	if(lhs.x>rhs.x )
+//	{
+//		return lhs.x<rhs.x ;
+//	}
+//	else if (lhs.x==rhs.x )
+//	{
+//		if(lhs.y==rhs.y)
+//		{
+//			if(lhs.index>rhs.index)
+//			{
+//				return lhs.index<rhs.index;
+//			}
+//		}
+//		{
+//			return lhs.y<rhs.y;
+//		}
+//		 
+//	}
+//	
+//} 
+
+bool printA(OBJ a,OBJ b)     
 {
-	if(lhs.x>rhs.x )
-	{
-		return lhs.x<rhs.x ;
-	}
-	else if (lhs.x==rhs.x )
-	{
-		return lhs.y<rhs.y ;
-	}
-} 
+if(a.x!=b.x) 
+	return a.x<b.x;       
+if(a.y!=b.y) 
+	return a.y<b.y;
+ 	return  a.index<b.index;
+}
+
+
 bool printB( OBJ lhs, OBJ rhs)
 {
 	if(lhs.y>rhs.y )
@@ -42,10 +64,9 @@ bool printB( OBJ lhs, OBJ rhs)
 } 
 int main()
 {
-	int chip_w=100000;//寬
-	int chip_h=30000;//高
-	OBJ temp,temp1,temp2;
-	vector<OBJ> aa,bb,cc,ddd ,pp,x1;
+	int chip_w=100000,chip_h=30000;//寬
+	OBJ temp;
+	vector<OBJ> aa,bb,cc,ddd,pp,x1,x2;
 	int count=0,inde=0,GGG[100000];
 	fstream fin;
     fin.open("file003.txt",ios::in);
@@ -70,61 +91,58 @@ int main()
 		{
 			bb[i].index++;
 		}
-		for(int i=0;i<bb.size();i++)
+		for(int i=0;i<bb.size();i++) //將長寬加入 
 		{
 		cc[i].width=bb[i].index;
 		cc[i].height=bb[i].index;
 		}
 
-		for(int i=0;i<cc.size();i++)
+		for(int i=0;i<cc.size();i++)  
 		{	
 			if((cc[i].width+cc[i].x)<=100000 && (cc[i].height+cc[i].y)<=30000 )
 			{
 				ddd.push_back(cc[i]); //12449筆資料 
 			}
-			else
-			{
-				continue;
-			}
 		}
-		pp.push_back(ddd[0]);
-		while(x1.size()!=1) 
+		 
+		while(ddd.size()!=1) 
 		{
-			x1.clear();
+			pp.push_back(ddd[0]);
+			x2.push_back(ddd[0]);
+		
 			for(int i=1;i<ddd.size();i++)
 			{
-				if(ddd[i].x>=(x1[0].x+x1[0].width))
+				if(ddd[i].x>=(x2[0].x+x2[0].width))
 				{
 					x1.push_back(ddd[i]);
 				}
-				else if((ddd[i].y+ddd[i].height)<=x1[0].y)
+				else if((ddd[i].y+ddd[i].height)<=x2[0].y)
 				{
 					x1.push_back(ddd[i]);
 				}
-				else if(ddd[i].y>=(x1[0].y+x1[0].height))
+				else if(ddd[i].y>=(x2[0].y+x2[0].height))
 				{
 					x1.push_back(ddd[i]);
 				}
 			}
-			pp.push_back(x1[0]);
-		
+			x2.clear();
 			ddd.clear();
 			ddd=x1;
+			x1.clear(); //x1暫存 
 			
 		}
-	
-		cout<<pp.size();
-//		cout<<"axis equal;"<<"\n"<<"hold on;"<<"\n"<<"grid on;"<<endl;
-//		
-//		cout<<"cap_x=[0 0 30000 30000 0];"<<endl;
-//		cout<<"cap_y=[0 30000 30000 0 0];"<<endl;
-//		cout<<"fill(cap_x,cap_y,'c');"<<endl;
-//		
-//		for(int i=0;i<1826;i++)
-//		{
-//			cout<<"cap_x=[";
-//		}
-	
+	cout<<pp.size();
+		cout<<"axis equal;"<<"\n"<<"hold on;"<<"\n"<<"grid on;"<<endl;
+		cout<<"cap_x=[0 0 100000 100000 0];"<<endl;
+		cout<<"cap_y=[0 30000 30000 0 0];"<<endl;
+		cout<<"fill(cap_x,cap_y,'c');"<<endl;
+		
+		for(int i=0;i<pp.size();i++)
+		{
+			cout<<"cap_x=["<<pp[i].x<<" "<<pp[i].x<<" "<<(pp[i].x+pp[i].width)<<" "<<(pp[i].x+pp[i].width)<<" "<<pp[i].x<<"];"<<endl;
+			cout<<"cap_y=["<<pp[i].y<<" "<<(pp[i].y+pp[i].height)<<" "<<(pp[i].y+pp[i].height)<<" "<<pp[i].y<<" "<<pp[i].y<<"];"<<endl;
+			cout<<"fill(cap_x,cap_y,'y');"<<endl;
+		}
 		system("pause");
     return 0;
 }	
