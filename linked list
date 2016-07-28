@@ -1,0 +1,153 @@
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <cstdlib>
+using namespace std;
+typedef class List {
+public:
+	int num;
+	List *next;
+//		List(int n) {
+//		num = n;
+//		next = NULL;
+//		}
+	} Hash;
+	Hash *hash[10]; //新增一個雜湊
+	void Insert(int input);
+	void Delete(int input);
+	void Search(int input);
+	void Show();
+	int Hash_funtion(int input);
+	void fList();
+	
+void Insert(int input) {
+	
+	int han = Hash_funtion(input);//sit為%10後的餘數 
+     List* n1=new List;// 等號右邊不能放NULL 
+     List* n2=new List;// 用new配置動態記憶體空間給n2
+     n1->num=input;//struct內的元素以->宣告 
+     n1->next=NULL;
+     
+     if(hash[han]==NULL)
+     {
+     	hash[han]=n1;//放到第一個 
+	 }
+	 else
+	 {
+	 	n2=hash[han];
+	 	while(n2->next!=NULL)
+	 		n2=n2->next;
+	 		
+	 	n2->next=n1;//存放下一層空間 
+	 }
+     //cout<<n1->data<<endl;
+}
+
+
+void Delete(int input) {
+	int i=input%10;
+	List* pre=new List;
+	List* ptr=new List;
+
+
+	if(hash[i]==NULL)
+	{
+		cout<<"nothing";
+	}
+	else if(hash[i]->num==input)
+	{
+		hash[i]=hash[i]->next;
+	}
+	else
+	{
+		pre=hash[i];
+		ptr=hash[i];
+		while(ptr!=NULL&&ptr->num!=input)
+	{
+		
+//		pre=ptr;
+		ptr=ptr->next;
+	}		
+	}
+	if(ptr!=NULL)
+		{
+			pre->next=ptr->next;
+			delete ptr;
+			cout<<input<<"被刪除"; 
+		}
+    else
+    cout<<"none"<<endl;
+}
+
+void Search(int input) {
+	int i=input%10,count=0;
+	List* n=new List;//node對node 
+		n=hash[i];
+		while(n!=NULL){
+			count++;
+			if(n->num==input)
+			cout<<"找到了!!   "<<input<<"在hash["<<i<<"]的第"<<count<<"個";
+			n=n->next;
+		}
+}
+void Show()
+{
+	List* n=new List;//node對node 
+	for(int i=0;i<10;i++) {
+		cout<<i<<" ";
+		n=hash[i];
+		while(n!=NULL){
+			cout<<n->num;
+			n=n->next;
+			cout<<" ";
+		}
+		cout<<"\n";
+	}
+}
+int Hash_funtion(int input) {
+return input%10;
+}
+
+
+void fList() {
+int optionl,key;
+while(1) {
+	cout<<"\n****單向鏈結串列****\n";
+	cout<<" 1.加入\n";
+	cout<<" 2.刪除\n";
+	cout<<" 3.列印\n";
+	cout<<" 4.搜尋\n";
+	cout<<" 5.結束\n";
+	cout<<"********************\n";
+	cout<<" 選擇1~5...";
+	cin>>optionl;
+		switch(optionl) {
+			case 1 :
+			cout<<"輸入要加入的數字"; 
+			cin>>key;
+			Insert(key);
+			break;
+			case 2 :
+				cout<<"輸入要刪除的數字"; 
+			cin>>key;
+			Delete(key);
+			break;
+			case 3 :
+			Show();
+			break;
+			case 4 :
+			cout<<"輸入要找的數字"; 
+			cin>>key;
+			Search(key);
+			break;
+			case 5 :
+			system("PAUSE");
+			break;
+			}
+		}
+}
+
+int main() {
+	fList();
+	return 0;
+	}
