@@ -62,9 +62,8 @@ void Delete(int input) {
 	{
 		pre=hash[i];
 		ptr=hash[i];
-		while(ptr!=NULL&&ptr->num!=input)
+		while(ptr!=NULL && ptr->num!=input)
 	{
-		
 //		pre=ptr;
 		ptr=ptr->next;
 	}		
