@@ -1,0 +1,218 @@
+#include<iostream>
+using namespace std;
+//Definition of Node for Binary search tree
+struct BstNode {
+	int data; 
+	BstNode* left;
+	BstNode* right;
+};
+
+BstNode* Insert(BstNode* root ,int number);
+BstNode* Search(BstNode* root,int number);
+BstNode* GetSL(BstNode* root);
+BstNode* GetSR(BstNode* root);
+BstNode* GetP(BstNode* root,int number);
+BstNode* NewNode(int data);
+
+int main()
+{
+	BstNode* root=NULL;
+	int sel;
+	while(1)
+	{
+		cout<<"1.add 2.delete 3.search:";
+		cin>>sel;
+		switch(sel)
+		{
+			case 1: 
+					int number;
+ 					cout<<"Enter your number:";
+ 					cin>>number;
+					root =Insert(root,number);  
+					break;
+//			case 2: Delete(); break;
+			case 3: 
+					int N;
+					cout<<"Enter the number you want to show:";
+					cin>>N;
+					Search(root,N); 
+
+					break;
+			case 4:	return 	0 ;
+					 break;	
+		}
+	}
+ } 
+
+BstNode* GetNewNode(int data) {
+	BstNode* newNode = new BstNode();
+	newNode->data = data;
+	newNode->left = newNode->right = NULL;
+	return newNode;
+}
+
+
+
+BstNode* Insert(BstNode* root,int data) {
+	if(root == NULL) {   
+		root = GetNewNode(data);
+	}
+	
+	else if(data <= root->data) {
+		root->left = Insert(root->left,data);
+	}
+
+	else {
+		root->right = Insert(root->right,data);
+	}
+	return root;
+}
+
+
+
+
+BstNode* Search(BstNode* root,int data) {
+	BstNode* rootr,*rootl,*temp;
+	if(root == NULL) {
+		cout<<"沒找到"<<endl; 
+	}
+	else if(root->data == data) {
+		rootr=GetSR(root);
+		rootl=GetSL(root);
+		cout<<"找到:"<<root->data<<endl; 		
+//		cout<<"找到:"<<temp->data<<endl; 
+	}
+	else if(data <= root->data) {  //小於往左邊 
+		temp=root;
+		return Search(root->left,data);
+	}
+	else {				//大於往右邊 
+		temp=root;
+		return Search(root->right,data);
+	}
+}
+
+
+BstNode* GetSL(BstNode* root)
+{
+	return root->left;
+}
+BstNode* GetSR(BstNode* root)
+{
+	return root->right;
+}
+
+
+
+
+//BstNode* Search(BstNode* root,int data) {
+//
+//	if(root == NULL) {
+//		cout<<"沒找到"<<endl; 
+//	}
+//	else if(root->data == data) {
+//		BstNode* rootL,*rootR,*rootP;
+//
+//		rootR=GetSR(root);
+//		rootL=GetSL(root);
+//		rootP=GetP(root,data);
+//		cout<<"找到:"<<root->data<<endl; 
+//		cout<<"找到左邊"<<rootL->data<<endl; 
+//		cout<<"找到右邊"<<rootR->data<<endl; 
+//		cout<<"找到P:"<<temp->data<<endl; 
+//	}
+//	else if(data <= root->data) {  //小於往左邊 
+//		temp->data=root->data;
+//		return Search(root->left,data);
+//	}
+//	else {				//大於往右邊 
+//		temp->data=root->data;
+//		return Search(root->right,data);
+//	}
+//}
+
+ 
+// BstNode* GetSR(BstNode* rootR)
+// {
+// 	rootR=rootR->right;
+// 	return rootR;
+// }
+// BstNode* GetSL(BstNode* rootL)
+// {
+// 	rootL=rootL->left;
+// 	return rootL;
+// }
+// 
+ 
+  BstNode* GetP(BstNode* root,int number)
+ {
+ 	BstNode* root1=root;
+ 	if(root->data==number)
+ 	{
+ 		return root1;
+	 }
+ 	
+ 	if(root->data<=number)
+ 	{
+ 		root=root->left;
+	 }
+	 else
+	 {
+	 	root=root->right;
+	 }
+ 	
+ 	return root1;
+ }
+
+
+
+//  BstNode* Insert(BstNode* root,int number) //插入 
+// {
+//	if(root==NULL)
+//	{
+//		root=NewNode(number);
+//	}
+//	else if(number<=root->data)
+//	{
+//		root->left=Insert(root->left,number);
+//	}
+//	else
+//	{
+//		root->right=Insert(root->right,number);
+//	}
+// }
+// 
+//   BstNode* NewNode(int number) //新增點  
+//   {
+//   		BstNode* newNode=new BstNode();
+//   		newNode->data=number;
+//   		newNode->left=NULL;
+//		newNode->right=NULL;
+//		return newNode;
+//   }
+//    
+//    BstNode* Search(BstNode* root,int data) {
+//	if(root == NULL) {
+//		cout<<"沒東西"<<endl;
+//	}
+//	else if(root->data == data) {
+//		BstNode* roots,*rootrs,*rootls,*rootp;
+//		rootrs=GetSR(root);
+//		rootls=GetSL(root);
+//		rootp=GetP(root, data);
+//		cout<<"找到:"<<roots->data<<endl;
+//		cout<<"找到右邊:"<<rootrs->data<<endl;
+//		cout<<"找到左邊:"<<rootls->data<<endl;
+//		cout<<"找到parent:"<<rootp->data<<endl;
+//	}
+//	else if(data <= root->data) {  //小於往左邊 
+//	cout<<"找到:"<<root->data<<endl;
+//		 Search(root->left,data);
+//	}
+//	else {	
+//	cout<<"找到:"<<root->data<<endl;			//大於往右邊 
+//		 Search(root->right,data);
+//	}
+//}
+//
+// 
