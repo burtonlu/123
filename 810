@@ -1,0 +1,183 @@
+#include <iostream>
+#include <string>
+#include <time.h>
+#include <vector>
+#include <map>
+#include <algorithm>
+#include<fstream>
+#include <stdio.h>
+#include <stdlib.h>
+using namespace std;
+#define MAX_VERTICES   100          /* 最大頂點數加一 */
+class Edge                       /* 圖形邊線結構宣告 */
+{
+public:
+    int from;                      /* 開始頂點 */
+    int to;                        /* 終點頂點 */
+    int weight;                    /* 權值 */
+    class Edge *next;             /* 指下一條邊線 */
+};
+
+class edge1
+{
+public:
+    string from;                      /* 開始頂點 */
+    string to;                        /* 終點頂點 */
+    int weight;                    /* 權值 */
+    class edge1 *next;
+};
+
+string s="ABCDEFGHIJKLMNO";
+typedef class Edge *EdgeList;    /* 邊線的結構新型態 */
+EdgeList first = NULL;            /* 邊線串列開始指標 */
+int vertex[MAX_VERTICES];         /* 檢查迴圈的頂點陣列 */
+void createEdge();
+void minSpanTree();
+void addSet(int from, int to);
+bool printA(edge1 a,edge1 b);
+int isSameSet(int from, int to);
+vector<edge1> aa;
+
+int TransForm(string ss)
+{
+    char c=ss[0];
+    for(int i=0 ; i<s.size(); i++)
+    {
+        if(s[i]==c)
+            return i+1;
+    }
+}
+
+
+void createEdge()
+{
+    EdgeList newnode;           /* 新邊線節點指標 */
+    EdgeList last;              /* 最後邊線節點指標 */
+    int i;
+    for (i = 0; i < aa.size(); i++)   /* 建立邊線串列主迴圈 */
+    {
+        newnode = new Edge;
+        newnode->from = TransForm(aa[i].from);  /* 邊線的起點 */
+        newnode->to = TransForm(aa[i].to);  /* 邊線的終點 */
+        newnode->weight = aa[i].weight; /* 建立成本內容 */
+        newnode->next = NULL;       /* 設定指標初值 */
+        if ( first == NULL )        /* 串列的第一個節點 */
+        {
+            first = newnode;         /* 建立串列開始指標 */
+            last = first;            /* 保留最後節點指標 */
+        }
+        else
+        {
+            last->next = newnode;    /* 鏈結至最後節點 */
+            last = newnode;          /* 保留最後節點指標 */
+        }
+    }
+}
+/* 函數: 新增到同一個集合 */
+void addSet(int from, int to)
+{
+    int to_root = to;             /* 從終點頂點找 */
+    while ( vertex[to_root] > 0 )
+        to_root = vertex[to_root];
+    vertex[to_root] = from;       /* 結合兩個頂點 */
+}
+/* 函數: 兩個頂點是否是同一個集合, 擁有同一個根頂點 */
+
+
+int isSameSet(int from, int to)
+{
+    int from_root = from;         /* 從開始頂點找 */
+    int to_root = to;             /* 從終點頂點找 */
+    while ( vertex[from_root] > 0 ) /* 找尋根頂點 */
+        from_root = vertex[from_root];
+    while ( vertex[to_root] > 0 )   /* 找尋根頂點 */
+        to_root = vertex[to_root];
+    if ( from_root == to_root )   /* 是否是同一根頂點 */
+        return 1;               /* 同一集合 */
+    else  return 0;               /* 不同集合 */
+}
+/* 函數: 最低成本擴張樹 */
+
+
+
+
+void minSpanTree()
+{
+    EdgeList ptr = first;          /* 指向串列的開始 */
+    int i, total = 0;
+    while ( ptr != NULL )
+    {
+        /* 是否是同一個集合, 相同會產生迴圈 */
+        if ( !isSameSet(ptr->from,ptr->to) )
+        {
+            /* 加入最低成本擴張樹的邊線 */
+            printf("頂點 V%d -> V%d 成本: %d\n",ptr->from,
+                   ptr->to,ptr->weight);
+            total += ptr->weight;          /* 計算成本 */
+            addSet(ptr->from,ptr->to);     /* 新增至集合 */
+        }
+        ptr = ptr->next;           /* 下一條邊線 */
+    }
+    printf("最低成本擴張樹的成本: %d\n", total);
+}
+
+
+bool printA(edge1 a,edge1 b)
+{
+    return  a.weight<b.weight;
+}
+
+
+int main()
+{
+    edge1 temp;
+
+    int count=0;
+    string s1,s2,s3,s4,s5;
+    fstream fin;
+    cout<<"select file 1. 2. 3. 4.:";
+
+        int sel;
+        cin>>sel;
+        switch(sel)
+        {
+        case 1:
+            fin.open("mst_5_7.txt",ios::in);
+            break;
+        case 2:
+            fin.open("mst_7_12.txt",ios::in);
+            break;
+        case 3:
+            fin.open("mst_8_16.txt",ios::in);
+            break;
+        case 4:
+            fin.open("mst_9_14.txt",ios::in);
+            break;
+        case 0:
+            break;}
+
+
+    while(getline(fin,s1))
+    {
+        count++;
+        if(count==3)
+        {
+            break;
+        }
+    }
+    while(fin>>s1>>temp.weight>>temp.from>>temp.to)
+    {
+        aa.push_back(temp);
+
+    }
+    sort(aa.begin(),aa.end(),printA);
+
+    int i;
+    createEdge();  /* 建立邊線串列 */
+    printf("圖形的最低成本擴張樹:\n");
+    minSpanTree();               /* 建立最小成本擴張樹 */
+    printf("頂點陣列內容: ");
+    printf("\n");
+    system("pause");
+    return 0;
+}
