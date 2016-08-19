@@ -1,0 +1,212 @@
+#include <iostream>
+#include <vector>
+#include <time.h>
+#include <string>
+#include <fstream>
+#include <algorithm>
+
+using namespace std;
+
+ofstream ff;
+class OBJ  //tree
+{
+public:
+    string name;
+    double length;
+    string node1;
+    string node2;
+    int sum;
+};
+class Node
+{
+public:
+    string name;
+    int node_sum;//node數的和
+    Node *parent;//啟始位置==拍[v]
+    double d;//d[v]
+};
+class Node *ptr1,*ptr2,*ptr;
+int Vertices,Edges;//節點數、線數
+double sum_length;
+vector < OBJ> obj,obj2;
+vector < Node> node;
+vector <string> check;//放ABCD用
+///vector <string> C;//show用，放edge名字
+
+void Openfile(string input)
+{
+    class OBJ my_obj;
+    string nch;  //垃圾桶，放不需要的資料用的
+    ifstream fin;
+    fin.open(input.c_str());//不能直接放檔名
+    fin >> nch >> nch ;
+    fin >> Vertices;
+    fin >> nch >> nch ;
+    fin >> Edges;
+    while(!fin.eof())
+    {
+        fin>>my_obj.name;
+        fin>>my_obj.length;
+        fin>>my_obj.node1;
+        fin>>my_obj.node2;
+        obj.push_back(my_obj);
+    }
+    fin.close();
+    cout<<"file opend"<<endl;
+//       for(int i=0;i<obj.size();i++){
+//        cout<<obj[i].name<<endl;
+//        cout<<obj[i].length<<endl;
+//        cout<<obj[i].node1<<endl;
+//        cout<<obj[i].node2<<endl;
+//       }
+};
+bool cmp(const string a,const string b)
+{
+    return a < b;
+}
+
+void Initial() //把字元存到check
+{
+    int i,j;
+    check.push_back(obj[0].node1); ///第一筆的 from
+    check.push_back(obj[0].node2); ///第一筆的 to
+     Node noode;  ///
+    for(int i=1; i<Edges; i++)
+    {
+        for( j=0; j<check.size(); j++)
+        {
+            if(obj[i].node1 == check[j])
+                break;
+        }
+        if(j==check.size())
+            check.push_back(obj[i].node1);
+        for( j=0; j<check.size(); j++)
+        {
+            if(obj[i].node2 == check[j])
+                break;
+        }
+        if(j==check.size())
+            check.push_back(obj[i].node2);
+    }
+    sort(check.begin(),check.end(),cmp);  ///將名稱排列
+    for( i=0; i<Vertices; i++)
+    {
+        noode.name = check[i];
+        noode.node_sum = 0;
+        noode.parent = NULL;
+        noode.d = 9999;
+        node.push_back(noode);
+    }
+
+};
+void relax( OBJ relax_obj)
+{
+    int a;
+    for(int i=0; i<check.size(); i++)
+    {
+        if(check[i]==relax_obj.node1)
+            ptr1=&node[i];
+        if(check[i]==relax_obj.node2)
+            ptr2=&node[i];
+    }
+    if(ptr2->d > ptr1->d+relax_obj.length)
+    {
+        ptr2->d=ptr1->d+relax_obj.length;
+        ptr2->parent=ptr1;
+    }
+};
+void bellman()
+{
+    ptr=&node[0];
+    ptr->d=0;
+    for(int i=1; i<obj.size(); i++)    /// obj.size()=資料筆數 與Edges同
+    {
+        for(int j=0; j<Edges; j++)
+        {
+            relax(obj[j]);
+        }
+    }
+    for(int k=0; k<obj.size(); k++)
+    {
+        for(int i=0; i<node.size(); i++)
+        {
+            if(node[i].name==obj[k].node1)
+                ptr1=&node[i];
+            else if(node[i].name==obj[k].node2)
+                ptr2=&node[i];
+        }
+    }
+}
+void show()
+{
+    cout<<"loop:"<<endl;
+    for(int i=0; i<node.size(); i++)
+    {
+        ptr=&node[i];
+        if(ptr->d==9999)
+        {
+            cout<<ptr->name<<" : x"<<endl;
+        }
+        else
+        {
+            cout<<ptr->name<<" : "<<ptr->d<<endl;
+        }
+    }
+};
+
+int main()
+{
+    int a;
+    string input_file,output;
+    cout << "Open files:" << endl;
+    cout << "1 : mst_5_7.txt" << endl;
+    cout << "2 : mst_7_12.txt" << endl;
+    cout << "3 : mst_8_16.txt" << endl;
+    cout << "4 : mst_9_14.txt" << endl;
+    cout << "5 : mst_12_17.txt" << endl;
+    while (cout << "Enter : ")
+    {
+        cin >> a;
+        switch (a)
+        {
+        case 1 :
+            input_file = "mst_5_7.txt";
+            break;
+        case 2 :
+            input_file = "mst_7_12.txt";
+            break;
+        case 3 :
+            input_file = "mst_8_16.txt";
+            break;
+        case 4 :
+            input_file = "mst_9_14.txt";
+            break;
+        case 5 :
+            input_file = "mst_12_17.txt";
+            break;
+        default:
+            break;
+        }
+        output="HW6_sssp_m103dwpeng_";
+        output+=input_file;
+        output.push_back('.');
+        output.push_back('t');
+        output.push_back('x');
+        output.push_back('t');
+        obj.clear();
+        obj2.clear();
+        node.clear();
+        check.clear();
+        ///C.clear();
+        /// sum_length=0;
+
+        Openfile(input_file);
+        ff.open(output.c_str());
+        Initial();
+        bellman();
+        show();
+
+
+    }
+    return 0;
+}
