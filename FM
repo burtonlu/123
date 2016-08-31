@@ -1,0 +1,88 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include<string>
+using namespace std;
+class Cell
+{
+public:
+   int num;
+    int ter=0;
+    int Cell_L;
+    int Cell_W;
+    string name;
+};
+
+class Net
+{
+    public:
+      int num;
+      string Type;
+      double x;
+      double y;  
+    
+};
+int NumNodes,NumTerminals;
+fstream fp;
+vector <Cell> aa;
+Cell temp;
+
+void OpenFileN(string Input)
+{
+    int count=0,num=0;
+    string trash;
+    fstream fin;
+    string s1;
+    fin.open(Input.c_str());//不能直接放檔名
+    while(getline(fin,s1))
+    {
+        count++;
+        if(count==4)
+        {
+            break;
+        }
+    }
+    fin>>trash>>trash>>NumNodes;
+    fin>>trash>>trash>>NumTerminals;
+    while(fin>>temp.name>>temp.Cell_L>>temp.Cell_W)
+    {
+        temp.num=num; ///number mem
+        num++;
+        if(num>=(NumNodes-NumTerminals)) ///has node=1
+        {
+            break;
+        }
+        aa.push_back(temp);
+    }
+    while(fin>>temp.name>>temp.Cell_L>>temp.Cell_W>>trash)
+    {
+        temp.num=num; ///number mem
+        num++;
+        temp.ter=1;
+        aa.push_back(temp);
+    }
+
+
+};
+
+void Out()
+{
+
+    for(int gg=0; gg<aa.size(); gg++)
+    {
+        fp<<aa[gg].num<<"\t"<<aa[gg].Cell_L<<"\t"<<aa[gg].Cell_W<<"\t"<<aa[gg].ter<<endl;
+    }
+
+}
+
+int main()
+{
+    fp.open("file009.txt", ios::out);
+    fstream fp;
+    string s;
+    int sel;
+    s="adaptec1.nodes";
+    OpenFileN(s);
+    Out();
+    return 0;
+}
